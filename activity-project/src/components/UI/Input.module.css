@@ -1,0 +1,49 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+  column-gap: 0.25rem;
+  margin: 1rem 0px;
+}
+
+.input .label {
+  font-size: 0.75rem;
+  color: #78716c;
+  font-weight: 800;
+}
+
+.input input,
+.input textarea,
+.input select {
+  padding: 0.25rem;
+  border: 0 solid;
+  border-color: #78716c;
+  background-color: #fff;
+  color: #57534e;
+  border-bottom-width: 0.075rem;
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    border-bottom-width: 0.125rem;
+  }
+
+  overflow-y: hidden;
+  resize: none;
+
+  &:disabled {
+    background-color: #d6d3d1;
+  }
+}
+
+.full {
+  width: 100%;
+}
+
+.half {
+  width: 45%;
+}
+
+.third {
+  width: 30%;
+}

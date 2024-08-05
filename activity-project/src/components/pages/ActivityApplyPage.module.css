@@ -1,0 +1,71 @@
+/* intro start */
+.intro h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  position: relative;
+  margin-bottom: 2rem;
+}
+.intro h2::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+}
+
+.intro p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.intro p a {
+  font-size: 1rem;
+}
+/* intro end */
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main {
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.submitButton {
+  width: 10rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  background-color: #44403c;
+  color: #e7e5e4;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+  &:hover {
+    background-color: #78716c;
+  }
+}
+
+.cancleButton {
+  width: 10rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  color: #78716c;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  &:hover {
+    color: #000;
+  }
+}

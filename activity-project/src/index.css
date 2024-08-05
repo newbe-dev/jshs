@@ -1,0 +1,36 @@
+/**/
+
+* {
+  border: 0px;
+}
+
+body {
+  margin: 0 auto;
+  /* background-color: #fafaf9; */
+  font-family: "NanumSquare";
+}
+
+table {
+  border-collapse: collapse;
+  border: 0;
+}
+th,
+td {
+  border: 1px solid #aaa;
+  background-clip: padding-box;
+  scroll-snap-align: start;
+}
+
+main {
+  /* background-color: white; */
+  /* border-radius: 1rem; */
+  border: 1px solid #e7e5e4;
+  min-height: 100vh;
+  padding-top: 100px;
+  background-color: #fafaf9;
+}
+
+header {
+  text-align: center;
+  height: 6rem;
+}
