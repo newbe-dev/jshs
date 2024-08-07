@@ -42,31 +42,31 @@ function ActivityGridItem({
   participants,
   place,
   instructor,
-  createdAt,
+  created_at,
   status,
   onApprove,
   onReject,
-  rejectReason,
+  reject_reason,
 }) {
   let statusText;
   let style;
   if (status === 0) {
-    statusText = "대기중";
+    statusText = "(대기중)";
     style = classes.reviewing;
   }
   if (status === 1) {
-    statusText = "승인됨";
+    statusText = "(승인됨)";
     style = classes.approved;
   }
   if (status === 2) {
-    statusText = "반려됨";
+    statusText = `(반려됨) (반려사유: ${reject_reason})`;
     style = classes.rejected;
   }
   return (
     <li key={id} className={classes.gridItem}>
       <div className={classes.top}>
         <span className={`${classes.elapsedText} ${style}`}>
-          {`${elapsedText(createdAt)}(${statusText})`}
+          {`${elapsedText(created_at)}${statusText}`}
         </span>
         {status === 0 ? (
           <div className={classes.buttonGroup}>
@@ -97,8 +97,6 @@ function ActivityGridItem({
       </div>
 
       <h1 className={classes.details}>{details}</h1>
-
-      {rejectReason && <span>{`반려사유: ${rejectReason}`}</span>}
 
       <table>
         <tbody>

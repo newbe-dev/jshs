@@ -1,6 +1,8 @@
+import classes from "./ActivityTable.module.css";
+
 function ActivityTable({ activities }) {
   return (
-    <table>
+    <table className={classes.table}>
       <thead>
         <tr>
           {/* <th>활동날짜</th> */}

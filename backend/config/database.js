@@ -1,6 +1,6 @@
 module.exports = {
-  host: "localhost",
-  user: "root",
-  password: "m03Tjdcks@@!",
-  database: "my_db",
+  host: "db.jshsus.kr",
+  user: "jshsus",
+  password: "dbgabiapw2024!",
+  database: "dbjshsus",
 };

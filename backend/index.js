@@ -1,7 +1,7 @@
 const express = require("express");
 const mysql = require("mysql2");
 const dbconfig = require("./config/database.js");
-const connection = mysql.createConnection(dbconfig);
+const db = mysql.createPool(dbconfig);
 const cors = require("cors");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
@@ -14,14 +14,13 @@ app.use(express.json());
 app.set("port", process.env.PORT || 3000);
 
 app.use(express.static(path.join(__dirname, "../activity-project/dist")));
-//
 
 /**
  * @returns 100 activities order by id desc
  */
 app.get("/api/activities", (req, res) => {
   try {
-    connection.query(
+    db.query(
       "SELECT * from Activity ORDER BY id DESC LIMIT 100;",
       (error, rows) => {
         if (error) throw error;
@@ -74,7 +73,7 @@ app.post(
       } = req.body;
       const sql = `INSERT INTO Activity(id, date, time, details, representative, participants, place, instructor)
         VALUES(NULL, '${date}', '${time}', '${details}', '${representative}', '${participants}', '${place}', '${instructor}');`;
-      connection.query(sql, (error, rows) => {
+      db.query(sql, (error, rows) => {
         if (error) throw error;
         res.send(rows);
         console.log(rows);
@@ -87,14 +86,14 @@ app.post(
 
 /**
  * @param status 상태
- * @param rejectReason 반려사유
+ * @param reject_reason 반려사유
  * @returns 수정된 activity
  */
 app.patch(
   "/api/activities/:id",
   [
     body("status").notEmpty().isNumeric(),
-    body("rejectReason").notEmpty().isString(),
+    // body("reject_reason").notEmpty().isString(),
   ],
   (req, res) => {
     const errors = validationResult(req);
@@ -104,14 +103,14 @@ app.patch(
 
     try {
       const id = req.params.id;
-      const { status, rejectReason } = req.body;
-      const sql = `UPDATE Activity SET status=${status}, rejectReason='${rejectReason}' WHERE id=${id};`;
-      connection.query(sql, (error, rows) => {
+      const { status, rejectReason: reject_reason } = req.body;
+      const sql = `UPDATE Activity SET status=${status}, reject_reason='${reject_reason}' WHERE id=${id};`;
+      db.query(sql, (error, rows) => {
         if (error) throw error;
       });
 
       const sql2 = `SELECT * FROM Activity WHERE id=${id};`;
-      connection.query(sql2, (error, rows) => {
+      db.query(sql2, (error, rows) => {
         if (error) throw error;
         res.send(rows);
       });
