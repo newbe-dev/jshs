@@ -1,1 +1,2 @@
-export const BASE_URL = "http://jshsus.kr/test_activity/";
+export const BASE_URL = "http://localhost:3000";
+// export const BASE_URL = "http://jshsus.kr/test_activity/";

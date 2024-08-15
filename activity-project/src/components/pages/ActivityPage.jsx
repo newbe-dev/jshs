@@ -49,6 +49,7 @@ const FILTEROPTIONS = [
 function ActivityPage() {
   const [activities, setActivities] = useState([]);
   const [searchKey, setSearchKey] = useState(SEARCHOPTIONS[0].value);
+  const [dateFilter, setDateFilter] = useState("");
   const [filter, setFilter] = useState(undefined);
   const [isViewGrid, setIsViewGrid] = useState(true); // grid vs list
   const [searchInput, setSearchInput] = useState("");
@@ -108,7 +109,7 @@ function ActivityPage() {
     if (!reason.trim()) return;
     async function fetchFn() {
       try {
-        const url = `http://localhost:3000/api/activities/${currentId}`;
+        const url = `${BASE_URL}/api/activities/${currentId}`;
         const res = await axios.patch(url, {
           status: 2,
           rejectReason: reasonInput.current.value,
@@ -132,21 +133,24 @@ function ActivityPage() {
     setCurrentId(id);
     setIsModalOpen(true);
   }
-
   let placeholder;
   if (searchKey === "details") placeholder = "활동내용으로 검색...";
   else if (searchKey === "place") placeholder = "활동장소로 검색...";
   else if (searchKey === "participants") placeholder = "참가학생으로 검색...";
   else if (searchKey === "instructor") placeholder = "지도교사로 검색...";
-
   const filteredActivities =
-    searchInput || filter !== undefined
+    searchInput || filter !== undefined || dateFilter !== ""
       ? activities
           .filter(
             (activity) => filter === undefined || filter === activity.status
           )
+          .filter(
+            (activity) =>
+              dateFilter === "" || dateFilter === activity.date.substr(0, 10)
+          )
           .filter((activity) => {
             return activity[searchKey].includes(searchInput);
+            // 키워드 검색
             // if (searchKey === "details")
             //   return activity.details.includes(searchInput);
             // else if (searchKey === "place") ...
@@ -188,17 +192,6 @@ function ActivityPage() {
               options={SEARCHOPTIONS}
               onChange={handleSelect}
             />
-            {/* <span className={classes.searchIcon}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-              </svg>
-            </span> */}
             <input
               type="search"
               className={classes.searchInput}
@@ -223,6 +216,11 @@ function ActivityPage() {
               );
             })}
           </div>
+          <input
+            className={classes.controlDateFilter}
+            type="date"
+            onChange={(e) => setDateFilter(e.target.value)}
+          />
           <div className={classes.controlView}>
             <button
               onClick={() => setIsViewGrid(true)}
@@ -272,11 +270,10 @@ function ActivityPage() {
             </button>
           </div>
         </div>
-
         {filteredActivities.length ? (
           isViewGrid ? (
             <ul className={classes.ul}>
-              {filteredActivities?.map((activity) => {
+              {filteredActivities.map((activity) => {
                 return (
                   <ActivityGridItem
                     key={activity.id}
