@@ -5,6 +5,7 @@ import SelectBox from "../UI/SelectBox";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { PLACEOPTIONS } from "../../constants";
+import { BASE_URL } from "../../config";
 
 function ActivityApplyPage() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function ActivityApplyPage() {
     async function fetchFn() {
       try {
         setIsLoading(true);
-        const url = "http://localhost:3000/api/activities";
+        const url = `${BASE_URL}/api/activities`;
         const res = await axios.post(url, { ...formData });
         console.log(res.data);
         alert("신청이 완료되었습니다!");

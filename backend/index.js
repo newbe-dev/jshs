@@ -13,7 +13,7 @@ app.use(express.json());
 // configuration =========================
 app.set("port", process.env.PORT || 3000);
 
-app.use(express.static(path.join(__dirname, "../activity-project/dist")));
+app.use(express.static(path.join(__dirname, "/dist")));
 
 /**
  * @returns 100 activities order by id desc
@@ -140,5 +140,5 @@ app.listen(app.get("port"), () => {
 
 //
 app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "../activity-project/dist/index.html"));
+  res.sendFile(path.join(__dirname, "/dist/index.html"));
 });

@@ -6,6 +6,7 @@ import ActivityGridItem from "../ActivityGridItem";
 import SelectBox from "../UI/SelectBox";
 import Modal from "../UI/Modal";
 import ActivityTable from "../ActivityTable";
+import { BASE_URL } from "../../config";
 
 const SEARCHOPTIONS = [
   {
@@ -59,7 +60,7 @@ function ActivityPage() {
   useEffect(() => {
     async function fetchFn() {
       try {
-        const url = `http://localhost:3000/api/activities`;
+        const url = `${BASE_URL}/api/activities`;
         const res = await axios.get(url);
         // console.log(res.data);
         setActivities(res.data);
@@ -83,7 +84,7 @@ function ActivityPage() {
   function handleApprove(id) {
     async function fetchFn() {
       try {
-        const url = `http://localhost:3000/api/activities/${id}`;
+        const url = `${BASE_URL}/api/activities/${id}`;
         const res = await axios.patch(url, {
           status: 1,
         });
