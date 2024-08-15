@@ -6,7 +6,9 @@ import ActivityGridItem from "../ActivityGridItem";
 import SelectBox from "../UI/SelectBox";
 import Modal from "../UI/Modal";
 import ActivityTable from "../ActivityTable";
+import React from "react";
 import { BASE_URL } from "../../config";
+import { PLACEOPTIONS } from "../../constants";
 
 const SEARCHOPTIONS = [
   {
@@ -138,8 +140,10 @@ function ActivityPage() {
   else if (searchKey === "place") placeholder = "활동장소로 검색...";
   else if (searchKey === "participants") placeholder = "참가학생으로 검색...";
   else if (searchKey === "instructor") placeholder = "지도교사로 검색...";
+
+  const cleanedSearchInput = searchInput.trim().toLowerCase();
   const filteredActivities =
-    searchInput || filter !== undefined || dateFilter !== ""
+    cleanedSearchInput || filter !== undefined || dateFilter !== ""
       ? activities
           .filter(
             (activity) => filter === undefined || filter === activity.status
@@ -149,27 +153,81 @@ function ActivityPage() {
               dateFilter === "" || dateFilter === activity.date.substr(0, 10)
           )
           .filter((activity) => {
-            return activity[searchKey].includes(searchInput);
-            // 키워드 검색
+            if (searchKey === "participants")
+              return (
+                activity.participants.includes(cleanedSearchInput) ||
+                activity.representative.includes(cleanedSearchInput)
+              );
+            else if (searchKey === "place")
+              return PLACEOPTIONS.find(
+                (place) => place.value === activity.place
+              )
+                .name.toLowerCase()
+                .includes(cleanedSearchInput);
+            else return activity[searchKey].includes(cleanedSearchInput);
+            // Example)
             // if (searchKey === "details")
             //   return activity.details.includes(searchInput);
             // else if (searchKey === "place") ...
           })
       : activities;
+  const groupedActivities = Object.groupBy(
+    filteredActivities,
+    ({ date }) => date
+  );
+
+  let content = filteredActivities.length ? (
+    Object.entries(groupedActivities)
+      .reverse()
+      .map(([key, value]) => {
+        return (
+          <React.Fragment key={key}>
+            <p className={classes.dateText}>{key.substring(0, 10)}</p>
+            {isViewGrid ? (
+              <ul className={classes.ul}>
+                {value.map((activity) => {
+                  return (
+                    <ActivityGridItem
+                      key={activity.id}
+                      {...activity}
+                      onApprove={() => handleApprove(activity.id)}
+                      onReject={() => handleClickReject(activity.id)}
+                    />
+                  );
+                })}
+              </ul>
+            ) : (
+              <ActivityTable key={key} activities={value} />
+            )}
+          </React.Fragment>
+        );
+      })
+  ) : (
+    <p>탐활서가 존재하지 않습니다.</p>
+  );
 
   return (
     <>
       <Modal open={isModalOpen} className={classes.rejectModal}>
-        <div>
-          <p>정말 반려하시겠습니까?</p>
+        <div className={classes.modalWrapper}>
+          <h3>반려하기</h3>
+          <p>반려 사유가 탐활서 상단에 표시됩니다.</p>
           <input
+            className={classes.rejectReasonInput}
             ref={reasonInput}
             placeholder="반려 사유를 입력해주세요"
           ></input>
-          <div className={classes.buttonGroup}>
-            <button onClick={() => setIsModalOpen(false)}>취소</button>
+          <footer className={classes.modalActions}>
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                reasonInput.current.value = "";
+              }}
+            >
+              취소
+            </button>
             <button onClick={handleReject}>확인</button>
-          </div>
+          </footer>
         </div>
       </Modal>
       <header className={classes.header}>
@@ -270,26 +328,7 @@ function ActivityPage() {
             </button>
           </div>
         </div>
-        {filteredActivities.length ? (
-          isViewGrid ? (
-            <ul className={classes.ul}>
-              {filteredActivities.map((activity) => {
-                return (
-                  <ActivityGridItem
-                    key={activity.id}
-                    {...activity}
-                    onApprove={() => handleApprove(activity.id)}
-                    onReject={() => handleClickReject(activity.id)}
-                  />
-                );
-              })}
-            </ul>
-          ) : (
-            <ActivityTable activities={filteredActivities} />
-          )
-        ) : (
-          <p>탐활서가 존재하지 않습니다.</p>
-        )}
+        {content}
       </main>
     </>
   );

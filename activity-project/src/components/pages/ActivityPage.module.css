@@ -67,6 +67,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 250px;
 }
 
 .ul {
@@ -74,17 +75,18 @@
   grid-gap: 24px;
   grid-template-columns: repeat(3, minmax(auto, 1fr));
   justify-content: space-around;
+  margin-bottom: 60px;
 }
 
 .utilityBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 10px;
   margin: 0 0 1.5rem 0;
 }
 
 .controlView {
-  width: 80px;
+  min-width: 80px;
   padding: 0.25rem 0.25rem;
 
   & button {
@@ -99,32 +101,96 @@
 
 /* table start */
 
+.dateText {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.dateText::after {
+  content: "";
+  display: block;
+
+  height: 0.5px;
+  background-color: #000;
+}
 /* table end */
 
 .rejectModal {
   flex-direction: column;
-  width: 400px;
-  height: 200px;
+  width: 500px;
+  border-radius: 1rem;
 
-  p {
-    font-size: 30px;
-  }
-
-  .buttonGroup {
-    display: flex;
-  }
   &::backdrop {
     background-color: black;
-    opacity: 0.7;
+    opacity: 0.4;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .modalWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .modalActions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .modalActions button {
+    padding: 8px 24px;
+    border-radius: 0.5rem;
+
+    font-weight: bold;
+    &:first-child {
+      background-color: transparent;
+      color: #a8a29e;
+      &:hover {
+        color: #57534e;
+      }
+    }
+
+    &:last-child {
+      background-color: black;
+      color: white;
+      &:hover {
+        background-color: #57534e;
+      }
+    }
+  }
+
+  .rejectReasonInput {
+    padding: 0 0.5rem;
+    border: 1px solid #e7e5e4;
+    border-radius: 0.25rem;
+    background-color: white;
+    height: 2rem;
+
+    &:hover {
+      border-color: #a8a29e;
+    }
+
+    &:focus {
+      outline: 1px solid #57534e;
+    }
   }
 }
 
-/* @media print {
-  * {
-    display: none;
+/* table and mobile */
+@media screen and (max-width: 1023px) {
+  .utilityBar {
+    flex-wrap: wrap;
   }
-
-  table {
-    display: block;
+  .searchGroup {
+    width: 100%;
   }
-} */
+  .ul {
+    grid-template-columns: repeat(2, minmax(auto, 1fr));
+  }
+}

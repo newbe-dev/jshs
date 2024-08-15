@@ -16,18 +16,49 @@ function ActivityTable({ activities }) {
       </thead>
       <tbody>
         {activities.map((activity) => {
+          const {
+            id,
+            // date,
+            time,
+            details,
+            representative,
+            participants,
+            place,
+            instructor,
+            // created_at,
+            status,
+            // onApprove,
+            // onReject,
+            // reject_reason,
+          } = activity;
+          let style;
+          if (status === 0) {
+            style = classes.pending;
+          } else if (status === 1) {
+            style = classes.approved;
+          } else if (status === 2) {
+            style = classes.rejected;
+          }
           return (
-            <tr key={activity.id} style={{ tableLayout: "fixed" }}>
+            <tr
+              key={id}
+              className={style}
+              style={{
+                tableLayout: "fixed",
+                opacity: status === 2 ? "0.5" : "1",
+              }}
+            >
               {/* <td>{activity.date.substring(0, 10)}</td> */}
 
-              <td>{activity.time}</td>
-              <td>{activity.place}</td>
-              <td>{activity.details}</td>
+              <td>{time}</td>
+              <td>{place}</td>
+              <td>{details}</td>
               {/* <td>{activity.representative}</td> */}
               <td style={{ textAlign: "left", wordBreak: "break-all" }}>
-                {activity.participants}
+                <b className={classes.bold}>{`${representative}(대표학생)`}</b>
+                {`, ${participants}`}
               </td>
-              <td>{activity.instructor}</td>
+              <td>{instructor}</td>
               {/* <td>{activity.status}</td> */}
             </tr>
           );

@@ -2,15 +2,31 @@
   width: 100%;
   table-layout: fixed;
   background-color: white;
+  margin-bottom: 60px;
 }
 
 .table td,
 .table th {
   padding: 10px 10px 10px 10px;
   text-align: center;
+  vertical-align: middle;
 }
 
 .table th {
   font-size: 1.2rem;
   background-color: #e7e5e4;
+}
+
+.table tr {
+  &.pending {
+    color: #a8a29e;
+  }
+
+  &.approved {
+    color: #000;
+  }
+
+  &.rejected {
+    color: #dc2626;
+  }
 }

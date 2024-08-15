@@ -1,10 +1,6 @@
 import { PLACEOPTIONS } from "../constants";
 import classes from "./ActivityGridItem.module.css";
 
-function format(str) {
-  return str.substr(0, 10);
-}
-
 function elapsedText(dateString) {
   const seconds = 1;
   const minute = seconds * 60;
@@ -52,7 +48,7 @@ function ActivityGridItem({
   let style;
   if (status === 0) {
     statusText = "(대기중)";
-    style = classes.reviewing;
+    style = classes.pending;
   }
   if (status === 1) {
     statusText = "(승인됨)";
@@ -63,7 +59,11 @@ function ActivityGridItem({
     style = classes.rejected;
   }
   return (
-    <li key={id} className={classes.gridItem}>
+    <li
+      key={id}
+      className={classes.gridItem}
+      style={status === 2 ? { opacity: 0.5 } : undefined}
+    >
       <div className={classes.top}>
         <span className={`${classes.elapsedText} ${style}`}>
           {`${elapsedText(created_at)}${statusText}`}
@@ -101,12 +101,6 @@ function ActivityGridItem({
       <table>
         <tbody>
           <tr>
-            <th>활동날짜</th>
-            <td>
-              <p>{date ? format(date) : null}</p>
-            </td>
-          </tr>
-          <tr>
             <th>활동시간</th>
             <td>
               <p>{time}</p>
@@ -119,15 +113,12 @@ function ActivityGridItem({
             </td>
           </tr>
           <tr>
-            <th>대표학생</th>
-            <td>
-              <p>{representative}</p>
-            </td>
-          </tr>
-          <tr>
             <th>참가학생</th>
             <td>
-              <p>{participants}</p>
+              <p>
+                <b className={classes.bold}>{`${representative}(대표학생)`}</b>
+                {`, ${participants}`}
+              </p>
             </td>
           </tr>
           <tr>
