@@ -69,3 +69,27 @@
     color: #000;
   }
 }
+
+.checkboxWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+
+  border: 0 solid;
+  border-color: #78716c;
+  background-color: #fff;
+  color: #57534e;
+  border-bottom-width: 0.075rem;
+}
+
+.checkboxGroup {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 6px;
+}
+
+.checkboxGroup span {
+  font-size: 0.75rem;
+  font-weight: bold;
+}

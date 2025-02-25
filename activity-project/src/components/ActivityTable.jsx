@@ -5,11 +5,9 @@ function ActivityTable({ activities }) {
     <table className={classes.table}>
       <thead>
         <tr>
-          {/* <th>활동날짜</th> */}
           <th style={{ width: "80px" }}>활동 시간</th>
           <th style={{ width: "120px" }}>활동 장소</th>
           <th style={{ width: "120px" }}>활동 내용</th>
-          {/* <th>대표학생</th> */}
           <th style={{ width: "" }}>전체 학생</th>
           <th style={{ width: "80px" }}>지도 교사</th>
         </tr>
@@ -48,18 +46,14 @@ function ActivityTable({ activities }) {
                 opacity: status === 2 ? "0.5" : "1",
               }}
             >
-              {/* <td>{activity.date.substring(0, 10)}</td> */}
-
               <td>{time}</td>
               <td>{place}</td>
               <td>{details}</td>
-              {/* <td>{activity.representative}</td> */}
               <td style={{ textAlign: "left", wordBreak: "break-all" }}>
                 <b className={classes.bold}>{`${representative}(대표학생)`}</b>
                 {`, ${participants}`}
               </td>
               <td>{instructor}</td>
-              {/* <td>{activity.status}</td> */}
             </tr>
           );
         })}

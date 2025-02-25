@@ -1,3 +1,4 @@
+//TODO: DB에서 받아오기
 export const PLACEOPTIONS = [
   {
     name: "AI실",

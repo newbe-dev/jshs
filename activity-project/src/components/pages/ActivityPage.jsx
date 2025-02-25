@@ -35,12 +35,12 @@ const FILTEROPTIONS = [
     value: undefined,
   },
   {
-    name: "승인됨",
-    value: 1,
-  },
-  {
     name: "대기중",
     value: 0,
+  },
+  {
+    name: "승인됨",
+    value: 1,
   },
   {
     name: "반려됨",
@@ -65,7 +65,6 @@ function ActivityPage() {
       try {
         const url = `${BASE_URL}/api/activities`;
         const res = await axios.get(url);
-        // console.log(res.data);
         setActivities(res.data);
       } catch (error) {
         console.log(error);
@@ -91,7 +90,6 @@ function ActivityPage() {
         const res = await axios.patch(url, {
           status: 1,
         });
-        console.log(res.data);
         setActivities((prevActivities) =>
           prevActivities.map((activity) => {
             return activity.id === id ? { ...res.data[0] } : activity;
@@ -135,6 +133,7 @@ function ActivityPage() {
     setCurrentId(id);
     setIsModalOpen(true);
   }
+
   let placeholder;
   if (searchKey === "details") placeholder = "활동내용으로 검색...";
   else if (searchKey === "place") placeholder = "활동장소로 검색...";

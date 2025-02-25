@@ -34,7 +34,6 @@ function ActivityGridItem({
   date,
   time,
   details,
-  representative,
   participants,
   place,
   instructor,
@@ -58,6 +57,7 @@ function ActivityGridItem({
     statusText = `(반려됨) (반려사유: ${reject_reason})`;
     style = classes.rejected;
   }
+  console.log(time);
   return (
     <li
       key={id}
@@ -116,8 +116,10 @@ function ActivityGridItem({
             <th>참가학생</th>
             <td>
               <p>
-                <b className={classes.bold}>{`${representative}(대표학생)`}</b>
-                {`, ${participants}`}
+                <b className={classes.bold}>{`${
+                  participants.split(",")[0]
+                }(대표학생)`}</b>
+                {`, ${participants.split(",").slice(1)}`}
               </p>
             </td>
           </tr>

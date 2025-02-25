@@ -34,10 +34,10 @@ function Input({
   else if (third) ratio = classes.third;
 
   return (
-    <p className={`${classes.input} ${ratio} ${className}`}>
+    <div className={`${classes.input} ${ratio} ${className}`}>
       {label && <label className={classes.label}>{label}</label>}
       {content}
-    </p>
+    </div>
   );
 }
 
