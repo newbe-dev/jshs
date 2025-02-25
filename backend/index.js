@@ -21,14 +21,14 @@ app.use(express.static(path.join(__dirname, "/dist")));
 app.get("/api/activities", (req, res) => {
   try {
     db.query(
-      // "SELECT * from Activity ORDER BY id DESC LIMIT 100;",
+      // "SELECT * from activity ORDER BY id DESC LIMIT 100;",
       `SELECT 
       a.*,
       GROUP_CONCAT(DISTINCT atime.name ORDER BY atime.id SEPARATOR ', ') AS time,
       GROUP_CONCAT(DISTINCT u.name ORDER BY u.student_id SEPARATOR ', ') AS participants
       FROM activity a
       LEFT JOIN activity_schedule asch ON a.id = asch.activity_id
-      LEFT JOIN time atime ON asch.id = atime.id
+      LEFT JOIN time atime ON asch.time_id = atime.id
       LEFT JOIN activity_user au ON a.id = au.activity_id
       LEFT JOIN jshsus_user u ON au.student_id = u.student_id
       GROUP BY a.id
@@ -60,9 +60,8 @@ app.post(
   "/api/activities",
   [
     body("date").notEmpty().isDate(),
-    body("time").notEmpty().isString(),
+    // body("time").notEmpty().isString(),
     body("details").notEmpty().isString(),
-    body("representative").notEmpty().isString(),
     body("participants").notEmpty().isString(),
     body("place").notEmpty().isNumeric(),
     body("instructor").notEmpty().isString(),
@@ -75,8 +74,9 @@ app.post(
 
     try {
       const { date, time, details, participants, place, instructor } = req.body;
-      const addActivityQuery = `INSERT INTO Activity(id, date, details, representative, place, instructor)
-        VALUES(NULL, '${date}', '${details}', '${leader_student_id}', '${place}', '${instructor}');`;
+      console.log(participants);
+      const addActivityQuery = `INSERT INTO activity(id, date, details, place, instructor)
+        VALUES(NULL, '${date}', '${details}', '${place}', '${instructor}');`;
       db.query(addActivityQuery, (error, rows) => {
         if (error) throw error;
         res.send(rows);
@@ -165,12 +165,12 @@ app.patch(
     try {
       const id = req.params.id;
       const { status, rejectReason: reject_reason } = req.body;
-      const sql = `UPDATE Activity SET status=${status}, reject_reason='${reject_reason}' WHERE id=${id};`;
+      const sql = `UPDATE activity SET status=${status}, reject_reason='${reject_reason}' WHERE id=${id};`;
       db.query(sql, (error, rows) => {
         if (error) throw error;
       });
 
-      const sql2 = `SELECT * FROM Activity WHERE id=${id};`;
+      const sql2 = `SELECT * FROM activity WHERE id=${id};`;
       db.query(sql2, (error, rows) => {
         if (error) throw error;
         res.send(rows);
@@ -184,7 +184,7 @@ app.patch(
 // app.delete("/api/activities/:id", (req, res) => {
 //   try {
 //     const id = req.params.id;
-//     const sql = `UPDATE Activity SET status=2 WHERE id=${id};`;
+//     const sql = `UPDATE activity SET status=2 WHERE id=${id};`;
 //     connection.query(sql, (error, rows) => {
 //       if (error) throw error;
 //       res.send(rows);

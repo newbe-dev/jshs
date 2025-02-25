@@ -117,9 +117,11 @@ function ActivityGridItem({
             <td>
               <p>
                 <b className={classes.bold}>{`${
-                  participants.split(",")[0]
+                  participants?.split(",")[0]
                 }(대표학생)`}</b>
-                {`, ${participants.split(",").slice(1)}`}
+                {participants?.length > 1
+                  ? `, ${participants?.split(",").slice(1)}`
+                  : null}
               </p>
             </td>
           </tr>
